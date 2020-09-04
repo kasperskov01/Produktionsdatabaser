@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Log ind</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <form id="login" class="auth shadow-box" onSubmit="return check_form_login()">
+            <h2>Log ind</h2>
+            <label for="username">Indtast brugernavn</label>
+            <input type="text" class="form-field" name="username" id="username" placeholder="Brugernavn">
+            <label for="password">Indtast adgangskode</label>
+            <input type="password" class="form-field" name="password" id="password" placeholder="Adgangskode">
+            <button class="submit" type="submit">Log ind</button>
+            <a class="login-register-link" href="/signup.html">Ikke en bruger? Opret dig her</a>
+        </form>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

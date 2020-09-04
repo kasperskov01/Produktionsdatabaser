@@ -3,7 +3,7 @@ app = Flask(__name__)
 @app.route('/api/', methods=["POST"])
 def main_interface():
     response = request.get_json()
-    print(response)
+    print(response["message"])    
     return jsonify(response)
 @app.after_request
 def add_headers(response):
