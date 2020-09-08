@@ -31,13 +31,12 @@ def login():
     username = response["username"]
     password = response["password"]
 
-    # found_user = users.query.filter_by(username=username).first()
-    # if found_user:
-    #     pass
-    # else:
-    #     new_user = users(response["username"],response["password"])
-    #     db.session.add(new_user)
-    #     db.session.commit()
+    found_user = users.query.filter_by(username=username).first()
+    if not found_user:
+        print("jeyt")
+        new_user = users(response["username"],response["password"])
+        db.session.add(new_user)
+        db.session.commit()
 
     print(response["username"])
     print(response["password"])
