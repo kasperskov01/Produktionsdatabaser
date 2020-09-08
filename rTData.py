@@ -21,7 +21,8 @@ class RTData():
         self.tool_frame = [0,0,0,0,0,0]
         self.program_state = 0
         self.thread = threading.Thread(target=self.read)
-
+        print(self.tool_frame)
+    
     def connect(self, ip, simulate=False):
         TCP_IP = ip
         TCP_PORT = 30003

@@ -15,7 +15,7 @@ class UR_programmer():
         #Grænser for tegningen (x-min, y-min, x-max, y-max)
         #Robot 3: x [-0.525, -0.325] y [-0.542, -0.265]
         self.tegne_limits = [-0.525, -0.542, -0.325, -0.265]
-        self.home_pos = b'    movej(p[-0.404,-0.317, 0.210, 1.43, -1.5, 1.07])\n'
+        self.home_pos = b'    movej(p[-0.48709836954289376, -0.11010631171999086, 0.24547688620045213, -2.218021967288288, -2.2221231843407026, -0.0015151572218644231])\n'
 
         #Husk at kontrollere ip-adressen!
         if not simulate:

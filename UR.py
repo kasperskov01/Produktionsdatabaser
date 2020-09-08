@@ -1,14 +1,28 @@
 from ur_programmer import UR_programmer
+from rTData import RTData
 
 prog = UR_programmer("10.130.58.14", simulate=False)
 
 inp = ''
-
+rtd = RTData()
+rtd.connect("10.130.58.14", simulate = False)
 print('')
 print('Kommandoer: ')
 print('Socket       - Åbner socket på robot')
 print('Hjem         - Flytter sig til hjem position')
 print('Path         - Bevæger robot i en path')
+print('Get pos      - Få nuværende position i meter')
+print('Rød          - Kør til rød')
+print('Blå          - Kør til Blå')
+print('Lilla        - Kør til lilla')
+print('Pink         - Kør til pink')
+
+#Punkter:
+Red_move = b'    movej(p[-0.46694534589480835, -0.37128454680967377, 0.04719900890326209, -2.2179237839798986, -2.22213649039662, -0.0015964512197490473])\n'
+Blue_move = b'    movej(p[-0.3693862960510677, -0.46808488913304924, 0.04724995447689745, -2.2179385532480334, -2.2220897902105032, -0.0014254072396997683])\n'
+Pink_move = b'    movej(p[-0.3693534253982512, -0.37132993152269583, 0.047187788409537745, -2.2179978175123582, -2.222064216064882, -0.0016359576113810165])\n'
+Purple_move = b'    movej(p[-0.46692173996805797, -0.468102314883946, 0.047183831068495635, -2.2179022788830376, -2.2221380390946655, -0.0016503394839434411])\n'
+
 while not inp.startswith('q'):
     inp = input('> ')
     
@@ -36,6 +50,7 @@ while not inp.startswith('q'):
         print('Socket åben')
     
     elif inp == "Hjem":
+        #Hjem er defineret i ur_programmer - linje 18
         #Prædefineret home-position:
         #(Når vi skal sende en streng til robotten,
         # skal den konverteres til et bytearray
@@ -43,6 +58,29 @@ while not inp.startswith('q'):
         prog.s.send(b'def myProg():\n')
         prog.s.send(prog.home_pos)
         prog.s.send(b'end\n')
-
+    
     elif inp == "Path":
         prog.move_path([[-0.404,-0.416],[-0.304,-0.416],[-0.304,-0.316]])
+
+    elif inp == "Get pos":
+        print(rtd.tool_frame)
+    
+    elif inp == "Rød":
+        prog.s.send(b'def myProg():\n')
+        prog.s.send(prog.Red_move)
+        prog.s.send(b'end\n')
+
+    elif inp == "Blå":
+        prog.s.send(b'def myProg():\n')
+        prog.s.send(prog.Blue_move)
+        prog.s.send(b'end\n')
+
+    elif inp == "Lilla":
+        prog.s.send(b'def myProg():\n')
+        prog.s.send(prog.Purple_move)
+        prog.s.send(b'end\n')
+
+    elif inp == "Pink":
+        prog.s.send(b'def myProg():\n')
+        prog.s.send(prog.Pink_move)
+        prog.s.send(b'end\n')    

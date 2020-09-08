@@ -15,7 +15,7 @@ class RealTimeProtocol(tk.Frame):
         self.robot = RTData()
         self.build_GUI()
 
-        self.robot.connect("10.130.58.11", False)
+        self.robot.connect("10.130.58.14", False)
 
         self.after(100, self.update)
         self.t = 0
@@ -25,7 +25,7 @@ class RealTimeProtocol(tk.Frame):
 
 
         #Socket til at sende kommandoer til robotten
-        TCP_IP = "10.130.58.11"
+        TCP_IP = "10.130.58.14"
         TCP_PORT = 30002
         BUFFER_SIZE = 1024
 
