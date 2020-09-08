@@ -31,6 +31,7 @@ function check_form_login() {
       username: username,
       password: password,
     });
+    console.log(data)
     if (!data) {
       console.log("API ikke tilgængelig");
     } else {

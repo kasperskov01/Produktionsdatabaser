@@ -1,24 +1,10 @@
 from flask import Flask, request, jsonify
-# from flask_sqlalchemy import SQLAlchemy
-from models import Schema, User
+from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-
-@app.route('/api/', methods=["POST"])
-def main_interface():
-    response = request.get_json()
-    user.create(str(response["message"]), "password")
-    print(response["message"])
-    return jsonify(response)
-
-@app.route("/")
-def hello_world():
-    return "Hello World"
-
-@app.route("/<name>")
-def hello(name):
-    return "hello " + name
-
+# cors = CORS(app)
+# app.config['CORS_HEADERS'] = 'Content-Type'
 
 # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 # db = SQLAlchemy(app)
@@ -26,12 +12,16 @@ def hello(name):
 # def database_init():
 #     db.create_all()
 
-# class Brugere(db.Model):
-#     __tablename__ = "brugere"
+# class users(db.Model):
 
 #     id = db.Column(db.Integer, primary_key=True)
 #     brugernavn = db.Column(db.String(30), nullable=False)
 #     adgangskode = db.Column(db.String(20), nullable=False)
+
+#     def __init__(self, brugernavn, adgangskode):
+#         self.brugernavn = brugernavn
+#         self.adgangskode = adgangskode
+
 
 #     def __repr__(self):
 #         return "<bruger_id %r" % self.id
@@ -39,24 +29,39 @@ def hello(name):
 # @app.route('/api/', methods=["POST"])
 # def main_interface():
 #     response = request.get_json()
-#     ny_bruger = Brugere(brugernavn=response["message"])
+#     ny_bruger = users(brugernavn=response["message"])
 #     print(ny_bruger.brugernavn)
 
-#     try:
-#         db.session.add(ny_bruger)
-#         db.session.commit
-#         return redirect("/")
-#     except:
-#         return "Der skete en fejl da du prøvede at oprette en bruger"
 
-#     return jsonify(response)
+@app.route('/api/login', methods=["POST"])
+# @cross_origin()
+def login():
+    response = request.get_json()
+    username = response["username"]
+    password = response["password"]
 
+    found_user = users.query.filter_by(username=username).first()
+    if found_user:
+        pass
+    else:
+        new_user = users(response["username"],response["password"])
+        db.session.add(new_user)
+        db.session.commit()
 
-# @app.route('/api/user/login?username&password/')
-# def login():
-#     response = request.get_json()
-#     print(response["username"])
-#     print(response["password"])
+    print(response["username"])
+    print(response["password"])
+    print(jsonify(response))
+
+    return jsonify(response)
+
+# @app.after_request
+# def after_request(response):
+#   response.headers.add('Access-Control-Allow-Origin', 'http://127.0.0.1:5500')
+#   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+#   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+#   response.headers.add('Access-Control-Allow-Credentials', 'true')
+#   return response
+    
 
 @app.after_request
 def add_headers(response):
@@ -65,6 +70,4 @@ def add_headers(response):
     return response
 
 if __name__ == '__main__':
-    schema = Schema()
-    user = User()
     app.run(debug=True)
