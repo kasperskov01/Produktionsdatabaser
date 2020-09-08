@@ -14,7 +14,7 @@ while not inp.startswith('q'):
     
     if inp == 'Socket':
         prog.s.send(b'def myProg():\n')
-        prog.s.send(b'  popup("Tobias er til maend")\n')
+        prog.s.send(b'  popup("test")\n')
         #prog.s.send(b'  open=socket_open("10.130.58.35",21)\n')
         #prog.s.send(b'  while open==False:\n')
         #prog.s.send(b'    open=socket_open("10.130.58.35",21)\n')
