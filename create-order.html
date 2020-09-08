@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ny ordre</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+
+<body>
+    <nav class="shadow-box">
+        <div class="nav-wrapper">
+            <ul class="heading">
+                <li>
+                    <h1>Produktionsdatabaser</h1>
+                </li>
+            </ul>
+            <ul class="navigation">
+                <li><a href="/my-orders.html">Mine ordrer</a></li>
+                <li><a href="/create-order.html">Bestil</a></li>
+                <li><a href="/login.html">Log ud</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="general-wrapper">
+        <form class="create-order shadow-box">
+            <h2>Tilføj ordre</h2>
+            <ul>
+                <select class="select-type" name="brick3" id="3">
+                    <option value="red">Rød</option>
+                    <option value="green">Grøn</option>
+                    <option value="blue">Blå</option>
+                </select>
+                <select class="select-type" name="brick2" id="2">
+                    <option value="red">Rød</option>
+                    <option value="green">Grøn</option>
+                    <option value="blue">Blå</option>
+                </select>
+                <select class="select-type" name="brick1" id="1">
+                    <option value="red">Rød</option>
+                    <option value="green">Grøn</option>
+                    <option value="blue">Blå</option>
+                </select>
+            </ul>
+            <button class="submit" type="submit">Bestil ordre</button>
+        </form>
+    </div>
+    <script src="javascript/app.js"></script>
+</body>
+
+</html>

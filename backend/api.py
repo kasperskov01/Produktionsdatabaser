@@ -13,12 +13,12 @@ def main_interface():
 
 @app.route("/")
 def hello_world():
-    return "Hello World"    
+    return "Hello World"
 
 @app.route("/<name>")
 def hello(name):
     return "hello " + name
-    
+
 
 # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 # db = SQLAlchemy(app)
@@ -31,7 +31,7 @@ def hello(name):
 
 #     id = db.Column(db.Integer, primary_key=True)
 #     brugernavn = db.Column(db.String(30), nullable=False)
-#     # adgangskode = db.Column(db.String(20), nullable=False)
+#     adgangskode = db.Column(db.String(20), nullable=False)
 
 #     def __repr__(self):
 #         return "<bruger_id %r" % self.id

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Opret bruger</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+
+<body>
+    <div class="wrapper">    
+        <form id="signup" class="auth shadow-box" onSubmit="return check_form_signup()">
+            <h2>Opret bruger</h2>
+            <label for="username">Indtast brugernavn</label>
+            <input type="text" class="form-field" name="username" id="username" placeholder="Brugernavn">
+            <label for="password">Indtast adgangskode</label>
+            <input type="password" class="form-field" name="password" id="password" placeholder="Brugernavn">
+            <label for="usertype">Vælg brugertype</label>
+            <select class="select-type" class="form-field" name="usertype" id="usertype">
+                <option value="kunde">Kunde</option>
+                <option value="kunde">Chef</option>
+            </select>
+            <button class="submit" type="submit">Opret bruger</button>
+            <a class="login-register-link" href="/login.html">Allerede en bruger? Log ind her</a>
+        </form>
+    </div>
+    <script src="javascript/app.js"></script>
+</body>
+
+</html>
