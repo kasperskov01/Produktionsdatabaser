@@ -2,7 +2,8 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-
+# cors = CORS(app)
+# app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 db = SQLAlchemy(app)
@@ -24,25 +25,39 @@ class users(db.Model):
     def __repr__(self):
         return "<bruger_id %r" % self.id
 
+# @app.route('/api/', methods=["POST"])
+# def main_interface():
+#     response = request.get_json()
+#     ny_bruger = users(username=response["message"])
+#     print(ny_bruger.username)
 
-@app.route('/api/login', methods=["POST"])
+
+@app.route('/api/user/login', methods=["POST"])
+# @cross_origin()
 def login():
     response = request.get_json()
     username = response["username"]
     password = response["password"]
 
-    found_user = users.query.filter_by(username=username).first()
-    if not found_user:
-        print("jeyt")
-        new_user = users(response["username"],response["password"])
-        db.session.add(new_user)
-        db.session.commit()
+    # found_user = users.query.filter_by(username=username).first()
+    # if found_user:
+    #     pass
+    # else:
+    #     new_user = users(response["username"],response["password"])
+    #     db.session.add(new_user)
+    #     db.session.commit()
+    
+    to_return = {"username": response["username"], "logged_in": True, "user_type": "kunde"}
+    print(to_return)
+    return jsonify(to_return)
 
-    print(response["username"])
-    print(response["password"])
-    print(jsonify(response))
-
-    return jsonify(response)
+# @app.after_request
+# def after_request(response):
+#   response.headers.add('Access-Control-Allow-Origin', 'http://127.0.0.1:5500')
+#   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+#   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+#   response.headers.add('Access-Control-Allow-Credentials', 'true')
+#   return response
     
 
 @app.after_request

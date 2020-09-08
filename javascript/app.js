@@ -23,7 +23,6 @@ async function isLoggedIn() {
     console.log("true");
     return true;
   }
-  console.log("false");
   return false;
 }
 
@@ -31,14 +30,11 @@ async function logout() {
   localStorage.setItem("logged_in", false);
   localStorage.setItem("username", undefined);
   localStorage.setItem("user_type", undefined);
-
   location.replace("/login.html");
 }
 
 async function autoRedirect() {
-  const validLogin = await isLoggedIn();
-  console.log(validLogin);
-  console.log(location.pathname);
+  const validLogin = await isLoggedIn();  
   if (
     !validLogin &&
     location.pathname !== "/login.html" &&
@@ -65,12 +61,12 @@ function check_form_login() {
     console.log("Valid");
     let username = $("#username").val();
     let password = $("#password").val();
-    ajax_request("/login", {
+    ajax_request("/user/login", {
       username: username,
       password: password,
     }).then((data) => {
       console.log(data);
-      localStorage.setItem("logged_in", true);
+      localStorage.setItem("logged_in", data["logged_in"]);
       localStorage.setItem("username", data["username"]);
       localStorage.setItem("user_type", data["user_type"]);
       autoRedirect();
@@ -93,7 +89,7 @@ function check_form_signup() {
     console.log("Valid");
     let username = $("#username").val();
     let password = $("#password").val();
-    let user_type = $("#usertype").val();
+    let user_type = $("#user_type").val();
     ajax_request("/login", {
       username: username,
       password: password,
