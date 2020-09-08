@@ -80,7 +80,10 @@ function login(username, password) {
     }
 
     autoRedirect();
-  });
+  }).catch(error => {
+    console.log(error)
+    alert("Der kunne ikke oprettes forbindelse")
+  });;
 }
 
 function check_form_login() {
@@ -103,7 +106,7 @@ function check_form_signup() {
       username: username,
       password: password,
       user_type: user_type,
-    }).then((data) => {
+    }).then(data => {
       console.log(data);
       if (data["user_created"] == true) {
         login(username, password);
@@ -112,6 +115,9 @@ function check_form_signup() {
       } else { 
         alert("User could not be created")
       }
+    }).catch(error => {
+      console.log(error)
+      alert("Der kunne ikke oprettes forbindelse")
     });
   }
   return false;

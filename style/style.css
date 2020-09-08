@@ -75,6 +75,7 @@ nav ul li a {
 .general-wrapper {
   width: 60%;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .auth {
@@ -83,6 +84,7 @@ nav ul li a {
   flex-direction: column;
   background: white;
   padding: 2rem;
+  margin: 0 1rem;
 }
 
 .shadow-box {
@@ -159,7 +161,7 @@ ul {
 /* My orders */
 
 table {
-    margin-top: 0.7rem;
+  margin-top: 0.7rem;
 }
 
 table,
@@ -171,5 +173,55 @@ td {
 
 td,
 th {
-    padding: 0.4rem;
+  padding: 0.4rem;
+}
+
+/* Tiny devices */
+@media (max-width: 575px) {
+  .general-wrapper,
+  .auth {
+    width: 100%;
+  }
+
+  ul.heading {
+    display: none;
+  }
+
+
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .general-wrapper,
+  .auth {
+    width: 100%;
+  }
+
+  nav ul {
+    width: 50%;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .general-wrapper,
+  .auth {
+    width: 400px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .general-wrapper,
+  .auth {
+    width: 400px;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .general-wrapper,
+  .auth {
+    width: 400px;
+  }
 }
