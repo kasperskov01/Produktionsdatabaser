@@ -79,12 +79,21 @@ nav ul li a {
 }
 
 .auth {
-  width: 40%;
+  /* width: 40%; */
   display: flex;
   flex-direction: column;
   background: white;
-  padding: 2rem;
+  padding: 1rem;
+  /* margin: 0 1rem; */
+}
+
+.general-wrapper.login-logout {
   margin: 0 1rem;
+  padding: 0;
+}
+
+.general-wrapper.order {
+  padding: 0 1rem;
 }
 
 .shadow-box {
@@ -146,7 +155,8 @@ button.submit:hover {
 .create-order {
   margin-top: 40px;
   background: white;
-  padding: 2rem;
+  padding: 1rem;
+  overflow-x: hidden;
 }
 
 select.select-type {
@@ -160,7 +170,13 @@ ul {
 
 /* My orders */
 
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
 table {
+  min-width: 100%;
   margin-top: 0.7rem;
 }
 
@@ -186,15 +202,31 @@ th {
   ul.heading {
     display: none;
   }
+  table,
+  th,
+  td {
+    /* font-size: smaller; */
+  }
+}
 
-
+/* Tiny devices */
+@media (min-width: 576px) {
+  .general-wrapper,
+  .auth,
+  .order {
+    width: 100%;
+  }
 }
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
   .general-wrapper,
   .auth {
-    width: 100%;
+    width: 400px;
+  }
+
+  .general-wrapper.order {
+    width: 600px;
   }
 
   nav ul {
@@ -208,6 +240,9 @@ th {
   .auth {
     width: 400px;
   }
+  .general-wrapper.order {
+    width: 600px;
+  }
 }
 
 /* Large devices (desktops, 992px and up) */
@@ -216,6 +251,10 @@ th {
   .auth {
     width: 400px;
   }
+
+  .general-wrapper.order {
+    width: 600px;
+  }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
@@ -223,5 +262,8 @@ th {
   .general-wrapper,
   .auth {
     width: 400px;
+  }
+  .general-wrapper.order {
+    width: 600px;
   }
 }

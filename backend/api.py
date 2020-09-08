@@ -28,12 +28,7 @@ class users(db.Model):
 
 @app.route('/api/user/signup', methods=["POST"])
 def opret():
-    response = request.get_json()
-    print("Printing response")
-    print("Printing response")
-    print("Printing response")
-    print("Printing response")
-    print(response)
+    response = request.get_json()        
     username = response["username"]
     password = response["password"]
     user_type = response["user_type"]
@@ -81,6 +76,6 @@ def add_headers(response):
     return response
 
 if __name__ == '__main__':
-    db.drop_all()
+    # db.drop_all()
     db.create_all()
     app.run(debug=True)

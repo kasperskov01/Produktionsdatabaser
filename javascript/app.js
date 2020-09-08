@@ -26,8 +26,6 @@ function is_valid() {
   });
   if (!valid) {
     alert("Venligst udfyld alle felter.")
-  } else {
-    console.log("Form valid")
   }
   return valid
 }
@@ -35,7 +33,6 @@ function is_valid() {
 async function isLoggedIn() {
   const token = localStorage.getItem("logged_in");
   if (token == "true") {
-    console.log("true");
     return true;
   }
   return false;
@@ -69,30 +66,26 @@ function login(username, password) {
     username: username,
     password: password,
   }).then((data) => {
-    console.log(data);
     if (data["logged_in"] == true) {
       localStorage.setItem("logged_in", data["logged_in"]);
       localStorage.setItem("username", data["username"]);
       localStorage.setItem("user_type", data["user_type"]);
     } else {
-      console.log("Login failed");
+      alert("Ugyldigt brugernavn / adgangskode");
       return "login_failed";
     }
-
     autoRedirect();
   }).catch(error => {
     console.log(error)
     alert("Der kunne ikke oprettes forbindelse")
-  });;
+  });
 }
 
 function check_form_login() {
   if (is_valid()) {
     let username = $("#username").val();
     let password = $("#password").val();
-    if (login(username, password) == "login_failed") {
-      alert("Bad username/password");
-    }
+    login(username, password)
   }
   return false;
 }
@@ -102,8 +95,6 @@ function check_form_signup() {
     let username = $("#username").val();
     let password = $("#password").val();
     let user_type = $("#user_type").val();
-    console.log("Sending request")
-    console.log(user_type)
     ajax_request("/user/signup", {
       username: username,
       password: password,
@@ -113,9 +104,9 @@ function check_form_signup() {
       if (data["user_created"] == true) {
         login(username, password);
       } else if (data["user_exists"] == true) {
-        alert("User already exists")
+        alert("Brugeren eksisterer allerede")
       } else { 
-        alert("User could not be created")
+        alert("Brugeren kunne ikke oprettes")
       }
     }).catch(error => {
       console.log(error)
