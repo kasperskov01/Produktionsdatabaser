@@ -18,12 +18,12 @@
             <ul class="navigation">
                 <li><a href="/my-orders.html">Mine ordrer</a></li>
                 <li><a href="/create-order.html">Bestil</a></li>
-                <li><a href="/login.html">Log ud</a></li>
+                <li><a id="logout" href="/login.html">Log ud</a></li>
             </ul>
         </div>
     </nav>
     <div class="general-wrapper">
-        <form class="create-order shadow-box">
+        <form class="create-order shadow-box" onSubmit="return create_order()">
             <h2>Tilføj ordre</h2>
             <ul>
                 <select class="select-type" name="brick3" id="3">
