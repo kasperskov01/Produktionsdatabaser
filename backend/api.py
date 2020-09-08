@@ -32,7 +32,7 @@ class users(db.Model):
 #     print(ny_bruger.username)
 
 
-@app.route('/api/login', methods=["POST"])
+@app.route('/api/user/login', methods=["POST"])
 # @cross_origin()
 def login():
     response = request.get_json()
@@ -46,12 +46,10 @@ def login():
     #     new_user = users(response["username"],response["password"])
     #     db.session.add(new_user)
     #     db.session.commit()
-
-    print(response["username"])
-    print(response["password"])
-    print(jsonify(response))
-
-    return jsonify(response)
+    
+    to_return = {"username": response["username"], "logged_in": True}
+    print(to_return)
+    return jsonify(to_return)
 
 # @app.after_request
 # def after_request(response):
