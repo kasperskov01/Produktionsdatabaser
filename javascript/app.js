@@ -1,18 +1,56 @@
-function ajax_request(url_path, data) {
-  $.ajax({
-    url: "http://127.0.0.1:5000/api" + url_path,
-    type: "POST",
-    contentType: "application/json",
-    data: JSON.stringify(data),
-    timeout: 2000,
-  })
-    .done(function (data) {
-      return data;
+async function ajax_request(url_path, data) {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: "http://127.0.0.1:5000/api" + url_path,
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(data),
+      timeout: 2000,
     })
-    .fail(function (jqXHR, textStatus, errorThrown) {
-      console.log(errorThrown);
-      return false;
-    });
+      .done(function (data) {
+        resolve(data);
+      })
+      .fail(function (jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+        reject();
+      });
+  });
+}
+
+async function isLoggedIn() {
+  const token = localStorage.getItem("logged_in");  
+  if (token == "true") {
+    console.log("true");
+    return true;
+  }
+  console.log("false");
+  return false;
+}
+
+async function logout() {
+  localStorage.setItem("logged_in", false);
+  localStorage.setItem("username", undefined);
+  localStorage.setItem("user_type", undefined);
+
+  location.replace("/login.html");
+}
+
+async function autoRedirect() {
+  const validLogin = await isLoggedIn();
+  console.log(validLogin);
+  console.log(location.pathname);
+  if (
+    !validLogin &&
+    location.pathname !== "/login.html" &&
+    location.pathname !== "/signup.html"
+  )
+    location.replace("/login.html");
+  if (
+    validLogin &&
+    (location.pathname === "/login.html" ||
+      location.pathname === "/signup.html")
+  )
+    location.replace("/create-order.html");
 }
 
 function check_form_login() {
@@ -27,15 +65,16 @@ function check_form_login() {
     console.log("Valid");
     let username = $("#username").val();
     let password = $("#password").val();
-    let data = ajax_request("/login", {
+    ajax_request("/login", {
       username: username,
       password: password,
-    });
-    if (!data) {
-      console.log("API ikke tilgængelig");
-    } else {
+    }).then((data) => {
       console.log(data);
-    }
+      localStorage.setItem("logged_in", true);
+      localStorage.setItem("username", data["username"]);
+      localStorage.setItem("user_type", data["user_type"]);
+      autoRedirect();
+    });
   } else {
     console.log("Invalid");
   }
@@ -54,12 +93,57 @@ function check_form_signup() {
     console.log("Valid");
     let username = $("#username").val();
     let password = $("#password").val();
-    let type = $("#usertype").val();    
-    let data = ajax_request("/login", {
+    let user_type = $("#usertype").val();
+    ajax_request("/login", {
       username: username,
       password: password,
-      type: type
-    });    
+      user_type: user_type,
+    }).then((data) => {
+      console.log(data);
+      localStorage.setItem("logged_in", data["logged_in"]);
+      localStorage.setItem("username", data["username"]);
+      localStorage.setItem("user_type", data["user_type"]);
+      autoRedirect();
+    });
+    if (!data) {
+      console.log("API ikke tilgængelig");
+    } else {
+      console.log(data);
+      localStorage.setItem("logged_in", data["logged_in"]);
+      localStorage.setItem("username", data["username"]);
+      localStorage.setItem("user_type", data["user_type"]);
+      autoRedirect();
+    }
+  } else {
+    console.log("Invalid");
+  }
+  return false;
+}
+
+$("#logout").click(function () {
+  event.preventDefault();
+  logout();
+});
+
+function create_order() {
+  let valid = true;
+  $(".form-field").each(function () {
+    if ($(this).val() === "") {
+      valid = false;
+      return false;
+    }
+  });
+  if (valid) {
+    console.log("Valid");
+    let brick1 = $("#brick1").val();
+    let brick2 = $("#brick2").val();
+    let brick3 = $("#brick3").val();
+    // let data = ajax_request("/login", {
+    //   username: username,
+    //   password: password,
+    //   type: type
+    // });
+    let data = {};
     if (!data) {
       console.log("API ikke tilgængelig");
     } else {
@@ -70,3 +154,5 @@ function check_form_signup() {
   }
   return false;
 }
+
+autoRedirect();

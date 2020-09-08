@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 app = Flask(__name__)
-@app.route('/api/', methods=["POST"])
+@app.route('/api/login', methods=["POST"])
 def main_interface():
     response = request.get_json()
-    print(response["message"])    
-    return jsonify(response)
+    print(response)
+    print(jsonify(response["username"], response["password"]))
+    return {'username': 'Bruger', 'password': '12345678'}
 @app.after_request
 def add_headers(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
