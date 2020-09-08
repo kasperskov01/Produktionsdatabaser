@@ -29,6 +29,11 @@ class users(db.Model):
 @app.route('/api/user/signup', methods=["POST"])
 def opret():
     response = request.get_json()
+    print("Printing response")
+    print("Printing response")
+    print("Printing response")
+    print("Printing response")
+    print(response)
     username = response["username"]
     password = response["password"]
     user_type = response["user_type"]

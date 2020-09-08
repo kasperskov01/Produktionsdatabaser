@@ -102,6 +102,8 @@ function check_form_signup() {
     let username = $("#username").val();
     let password = $("#password").val();
     let user_type = $("#user_type").val();
+    console.log("Sending request")
+    console.log(user_type)
     ajax_request("/user/signup", {
       username: username,
       password: password,
