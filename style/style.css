@@ -19,6 +19,10 @@ body {
   background: #eeeeee;
 }
 
+footer {
+  height: 4rem;
+}
+
 /* Nav */
 
 nav {
@@ -26,6 +30,12 @@ nav {
   height: 50px;
   /* border-bottom: 1px solid #333; */
   background: white;
+  position: fixed;
+  top: 0;
+}
+
+.nav-spacing {
+  height: 50px;
 }
 
 .nav-wrapper {
@@ -44,11 +54,11 @@ nav .heading {
 }
 
 nav .navigation {
-  flex: 1 1.5 auto;
+  flex: 0 0 auto;
 }
 
 nav ul {
-  width: 80%;
+  /* width: 80%; */
   height: 100%;
   margin: 0 auto;
   display: flex;
@@ -56,6 +66,10 @@ nav ul {
   flex-direction: row;
   align-items: center;
   list-style: none;
+}
+
+nav ul.navigation > * {
+  padding-left: 1rem;
 }
 
 nav ul li a {
@@ -199,14 +213,13 @@ th {
     width: 100%;
   }
 
-  ul.heading {
+  .nav-wrapper {
+    width: 95%;
+  }
+
+  /* ul.heading {
     display: none;
-  }
-  table,
-  th,
-  td {
-    /* font-size: smaller; */
-  }
+  } */
 }
 
 /* Tiny devices */
@@ -222,15 +235,11 @@ th {
 @media (min-width: 576px) {
   .general-wrapper,
   .auth {
-    width: 400px;
+    width: 500px;
   }
 
   .general-wrapper.order {
-    width: 600px;
-  }
-
-  nav ul {
-    width: 50%;
+    width: 500px;
   }
 }
 
@@ -238,18 +247,21 @@ th {
 @media (min-width: 768px) {
   .general-wrapper,
   .auth {
-    width: 400px;
+    width: 500px;
   }
   .general-wrapper.order {
-    width: 600px;
+    width: 500px;
   }
+  /* nav ul {
+    width: 50%;
+  } */
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .general-wrapper,
   .auth {
-    width: 400px;
+    width: 600px;
   }
 
   .general-wrapper.order {
@@ -261,7 +273,7 @@ th {
 @media (min-width: 1200px) {
   .general-wrapper,
   .auth {
-    width: 400px;
+    width: 600px;
   }
   .general-wrapper.order {
     width: 600px;

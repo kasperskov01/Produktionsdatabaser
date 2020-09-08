@@ -17,12 +17,13 @@
                 </li>
             </ul>
             <ul class="navigation">
-                <li><a href="/my-orders.html">Mine ordrer</a></li>
-                <li><a href="/create-order.html">Bestil</a></li>
+                <!-- <li><a href="/my-orders.html">Mine ordrer</a></li> -->
+                <li><a href="/home.html">Hjem</a></li>
                 <li><a id="logout" href="/login.html">Log ud</a></li>
             </ul>
         </div>
     </nav>
+    <div class="nav-spacing"></div>
     <div class="general-wrapper">
         <form class="create-order shadow-box" onSubmit="return create_order()">
             <h2>Tilføj ordre</h2>
@@ -46,6 +47,15 @@
             <button class="submit" type="submit">Bestil ordre</button>
         </form>
     </div>
+    <div class="general-wrapper order">
+        <div class="create-order shadow-box">
+            <h2>Mine ordrer</h2>
+            <div class="table-container">
+                <table id="my-orders" style="width:100%"></table>
+            </div>
+        </div>
+    </div>
+    <footer></footer>
     <script src="javascript/app.js"></script>
 </body>
 
