@@ -47,7 +47,7 @@ def login():
     #     db.session.add(new_user)
     #     db.session.commit()
     
-    to_return = {"username": response["username"], "logged_in": True}
+    to_return = {"username": response["username"], "logged_in": True, "user_type": "kunde"}
     print(to_return)
     return jsonify(to_return)
 
