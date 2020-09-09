@@ -7,10 +7,11 @@ import socket
 
 prog = UR_programmer("10.130.58.14", simulate=False)
 
-inp = ''
+
 rtd = RTData()
 rtd.connect("10.130.58.14", simulate = False)
-print('')
+
+inp = ''
 print('Kommandoer: ')
 print('Socket       - Åbner socket på robot')
 print('Hjem         - Flytter sig til hjem position')
@@ -22,10 +23,15 @@ print('Lilla        - Kør til lilla')
 print('Pink         - Kør til pink')
 
 #Punkter:
-prog.Red_move = b'    movej(p[-0.46694534589480835, -0.37128454680967377, 0.04719900890326209, -2.2179237839798986, -2.22213649039662, -0.0015964512197490473])\n'
-prog.Blue_move = b'    movej(p[-0.3693862960510677, -0.46808488913304924, 0.04724995447689745, -2.2179385532480334, -2.2220897902105032, -0.0014254072396997683])\n'
-prog.Pink_move = b'    movej(p[-0.3693534253982512, -0.37132993152269583, 0.047187788409537745, -2.2179978175123582, -2.222064216064882, -0.0016359576113810165])\n'
-prog.Purple_move = b'    movej(p[-0.46692173996805797, -0.468102314883946, 0.047183831068495635, -2.2179022788830376, -2.2221380390946655, -0.0016503394839434411])\n'
+prog.Red_move = b'    movej(p[-0.46767872396762844, -0.3698128835873044, 0.02963185559456491, -2.217932472407618, -2.222047281659294, -0.0015727295386725355])\n'
+prog.Blue_move = b'    movej(p[-0.3725509088123165, -0.4680704494476208, 0.029604686116777662, -2.217798272104411, -2.222176627899193, -0.0016518231639489926])\n'
+prog.Pink_move = b'    movej(p[-0.3716525461718336, -0.3698075928096446, 0.029599473982834468, -2.2179488026010796, -2.222120088244764, -0.0016251985431207378])\n'
+prog.Purple_move = b'    movej(p[-0.46692245864436893, -0.46808077336865894, 0.029610921748734587, -2.2178113553864187, -2.2221030858373014, -0.0016967473819248587])\n'
+# Orange [-0.420614286251442, -0.46641331209174874, 0.03582780354449258, -2.2156841824734443, -2.2199490902870997, 0.02064645090552405]
+# Gul [-0.42058003586208015, -0.3883641450258493, 0.03578899582582096, -2.2155951162793177, -2.219969625604299, 0.02040174424696846]
+prog.Kop_move = b'    movej(p[-0.4065437681072872, -0.002418697295223622, 0.1690680827318533, -2.217976025883232, -2.222246788559907, -0.0015539678724949641])\n'
+prog.Hover_move = b'    movej(p[-0.4121797433628598, -0.4184062836040695, 0.08139044773530577, -2.2179206669309033, -2.222198154631676, -0.001408599175344454])\n'
+prog.Stick_move = b'    movej(p[-0.47775575448931235, -0.1988892490740506, 0.021096244513058332, -2.217857467590136, -2.2222498562643205, -0.001498164332685943])\n'
 
 while not inp.startswith('q'):
     inp = input('> ')
@@ -89,6 +95,42 @@ while not inp.startswith('q'):
         prog.s.send(prog.Pink_move)
         prog.s.send(b'end\n')
 
+    elif inp =='Kop':
+        prog.s.send(b'def myProg():\n')
+        prog.s.send(prog.Kop_move)
+        prog.s.send(b'end\n')
+
+    elif inp =='Hover':
+        prog.s.send(b'def myProg():\n')
+        prog.s.send(prog.Hover_move)
+        prog.s.send(b'end\n')
+
+    elif inp =='Stick':
+        prog.s.send(b'def myProg():\n')
+        prog.s.send(prog.Stick_move)
+        prog.s.send(b'end\n')
+
+    elif inp =="Remove":
+        TCP_PORT = 29999
+        BUFFER_SIZE = 1024
+        TCP_IP = "10.130.58.14"#INDTAST DEN RIGTIGE IP-ADRESSE HER!
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(10)
+        try:
+            s.connect((TCP_IP, TCP_PORT))
+            response = s.recv(BUFFER_SIZE)
+        except socket.error:
+            print("Socket error")
+            s.close()
+
+        st = "load /programs/henrik3d/remove.urp\n"
+        s.send(bytearray(st,'utf8'))
+        response = s.recv(BUFFER_SIZE)
+        s.send(b"play\n")
+        response = s.recv(BUFFER_SIZE)
+        s.close()
+
+
     elif inp =="Luk":
         TCP_PORT = 29999
         BUFFER_SIZE = 1024
@@ -128,3 +170,4 @@ while not inp.startswith('q'):
         s.send(b"play\n")
         response = s.recv(BUFFER_SIZE)
         s.close()
+
