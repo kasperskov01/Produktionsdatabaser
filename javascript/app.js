@@ -1,7 +1,7 @@
 async function ajax_request(url_path, data) {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: "http://127.0.0.1:5000/api" + url_path,
+      url: "https://proddb.herokuapp.com/api" + url_path,
       type: "POST",
       contentType: "application/json",
       data: JSON.stringify(data),
