@@ -1,1 +1,1 @@
-dev: gunicorn backend/api:app
+dev: gunicorn api:app
