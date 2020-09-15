@@ -1,7 +1,9 @@
 import requests
 import json
 
-query = {'username':'Kasper', 'password':'123'}
-response = requests.post('https://proddb.herokuapp.com/api/user/login', params=query)
-data = response.content
-print(data)
+query = {'username':'Kasper', 'password':'123', 'user_type':'chef'}
+response = requests.post('https://proddb.herokuapp.com/api/user/signup', json=query)
+data = response.json()
+if data:
+    print(data)
+    print(data["user_exists"])
