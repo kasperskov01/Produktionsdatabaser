@@ -4,9 +4,11 @@ import tkinter as tk
 from math import sin
 import time
 import socket
+import sqlite3
 
 prog = UR_programmer("10.130.58.14", simulate=False)
 
+con = sqlite3.connect('data.db')
 
 rtd = RTData()
 rtd.connect("10.130.58.14", simulate = False)
@@ -24,6 +26,10 @@ print('Pink         - Kør til pink')
 print('Åben         - Åbner klo')
 print('Luk          - Lukker klo')
 print('Remove       - Tager en pind og clearer plate')
+print('Opret db     - Opretter database')
+print('Add          - Tilføj til database')
+print('Opret db     - Lav database orders')
+print('Tilføj       - Tilføj ordre til database')
 
 #Punkter:
 prog.Red_move = b'    movej(p[-0.46767872396762844, -0.3698128835873044, 0.02963185559456491, -2.217932472407618, -2.222047281659294, -0.0015727295386725355])\n'
@@ -172,3 +178,28 @@ while not inp.startswith('q'):
         response = s.recv(BUFFER_SIZE)
         s.close()
 
+    elif inp == "Opret db":
+        try:
+            con.execute("""CREATE TABLE orders (
+                orderID STRING,
+                ting1 INTEGER,
+                ting2 INTEGER, 
+                ting3 INTEGER)""")
+            print('Tabel 1 oprettet')
+            con.commit()
+        except Exception as e:
+            print('Tabellen findes allerede/fejl opstod')
+    
+    
+    elif inp == "Tilføj":
+        orderID = input('Indtast orderID: ')
+        ting1 = input('Indtast farve 1: ')
+        ting2 = input('Indtast farve 2: ')
+        ting3 = input('Indtast farve 3: ')
+        c = con.cursor()
+        c.execute('INSERT INTO orders (orderID,ting1,ting2,ting3) VALUES (?,?,?,?)', (orderID,ting1,ting2,ting3))
+        con.commit()
+
+    elif inp == "Vis":
+        c = con.cursor()
+        c.execute('SELECT orderID,ting1,ting2, ting3 FROM orders')
