@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import json
 
 app = Flask(__name__)
 
@@ -27,7 +28,7 @@ class Type(db.Model):
 
 
 class User(db.Model):
-    # __tablename__ = "users"
+    __tablename__ = "users"
 
     id = db.Column("id", db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False)
@@ -67,7 +68,7 @@ class Order(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
     date_ordered = db.Column(db.DateTime, default=datetime.now)
     date_finished = db.Column(db.DateTime, default=None)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     # status_id = db.Column(db.Integer, nullable=False, default=1) # Default er den status id som ordren får
     # robot_id = db.Column(db.Integer, nullable=False)
     product = db.Column(db.String(200), nullable=False)
@@ -147,7 +148,8 @@ def new_order():
     found_user = User.query.filter_by(username=username).first()
     print(f"found user: {type(found_user)}, username: {found_user.username}")
 
-    new_order = Order(product=product, user=found_user)
+    new_order = Order(product=json.dumps(product), user=found_user)
+    print(f"product: {new_order.product}")
 
     db.session.add(new_order)
     db.session.commit()
