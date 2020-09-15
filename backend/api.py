@@ -20,19 +20,20 @@ class Type(db.Model):
 
     id = db.Column("id", db.Integer, primary_key=True)
     user_type = db.Column(db.String(100), nullable=False)
-    users = db.relationship('User', backref='types', lazy=True)
+    users = db.relationship('User', backref='type', lazy=True)
 
     def __init__(self, user_type):
         self.user_type = user_type
 
 
 class User(db.Model):
-    __tablename__ = "users"
+    # __tablename__ = "users"
 
     id = db.Column("id", db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     type_id = db.Column(db.Integer, db.ForeignKey('types.id'), nullable=False)
+    orders = db.relationship('Order', backref='user', lazy=True)
 
     def __init__(self, username, password):
         self.username = username
@@ -64,18 +65,15 @@ class Order(db.Model):
     __tablename__ = "orders"
 
     id = db.Column("id", db.Integer, primary_key=True)
-    date_ordered = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    date_ordered = db.Column(db.DateTime, default=datetime.now)
     date_finished = db.Column(db.DateTime, default=None)
-    user_id = db.Column(db.Integer, nullable=False)
-    status_id = db.Column(db.Integer, nullable=False, default=1) # Default er den status id som ordren får
-    robot_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    # status_id = db.Column(db.Integer, nullable=False, default=1) # Default er den status id som ordren får
+    # robot_id = db.Column(db.Integer, nullable=False)
     product = db.Column(db.String(200), nullable=False)
 
-    def __init__(self, date_ordered, userid, robotid, product):
-        self.date_ordered = date_ordered
-        self.user_id = user_id
-        self.robot_id = robot_id
-        self.product = product
+    # def __init__(self, product):
+    #     self.product = product
 
 
 
@@ -85,8 +83,10 @@ def opret():
     username = response["username"]
     password = response["password"]
     user_type = response["user_type"]
+    print(f"user type:{user_type}")
 
     found_user_type = Type.query.filter_by(user_type=user_type).first()
+    print(type(found_user_type))
     if not found_user_type:
         _type = Type(user_type)
         print("new user type created")
@@ -143,6 +143,22 @@ def new_order():
     response = request.get_json()
     username = response["username"]
     product = response["product"]
+
+    found_user = User.query.filter_by(username=username).first()
+    print(f"found user: {type(found_user)}, username: {found_user.username}")
+
+    new_order = Order(product=product, user=found_user)
+
+    db.session.add(new_order)
+    db.session.commit()
+
+    # # print(new_order.id)
+    # # print(new_order.product)
+    # # print(new_order.user_id)
+    to_return = {"order_created": True}
+
+    return jsonify(to_return)
+
 
 
 @app.after_request
