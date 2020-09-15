@@ -1,7 +1,7 @@
 async function ajax_request(url_path, data) {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: "http://127.0.0.1:5000/api" + url_path,
+      url: "https://proddb.herokuapp.com/api" + url_path,
       type: "POST",
       contentType: "application/json",
       data: JSON.stringify(data),
@@ -25,17 +25,14 @@ function is_valid() {
     }
   });
   if (!valid) {
-    alert("Venligst udfyld alle felter.")
-  } else {
-    console.log("Form valid")
+    alert("Venligst udfyld alle felter.");
   }
-  return valid
+  return valid;
 }
 
 async function isLoggedIn() {
   const token = localStorage.getItem("logged_in");
   if (token == "true") {
-    console.log("true");
     return true;
   }
   return false;
@@ -61,38 +58,36 @@ async function autoRedirect() {
     (location.pathname === "/login.html" ||
       location.pathname === "/signup.html")
   )
-    location.replace("/create-order.html");
+    location.replace("/home.html");
 }
 
 function login(username, password) {
   ajax_request("/user/login", {
     username: username,
     password: password,
-  }).then((data) => {
-    console.log(data);
-    if (data["logged_in"] == true) {
-      localStorage.setItem("logged_in", data["logged_in"]);
-      localStorage.setItem("username", data["username"]);
-      localStorage.setItem("user_type", data["user_type"]);
-    } else {
-      console.log("Login failed");
-      return "login_failed";
-    }
-
-    autoRedirect();
-  }).catch(error => {
-    console.log(error)
-    alert("Der kunne ikke oprettes forbindelse")
-  });;
+  })
+    .then((data) => {
+      if (data["logged_in"] == true) {
+        localStorage.setItem("logged_in", data["logged_in"]);
+        localStorage.setItem("username", data["username"]);
+        localStorage.setItem("user_type", data["user_type"]);
+      } else {
+        alert("Ugyldigt brugernavn / adgangskode");
+        return "login_failed";
+      }
+      autoRedirect();
+    })
+    .catch((error) => {
+      console.log(error);
+      alert("Der kunne ikke oprettes forbindelse");
+    });
 }
 
 function check_form_login() {
   if (is_valid()) {
     let username = $("#username").val();
     let password = $("#password").val();
-    if (login(username, password) == "login_failed") {
-      alert("Bad username/password");
-    }
+    login(username, password);
   }
   return false;
 }
@@ -106,19 +101,21 @@ function check_form_signup() {
       username: username,
       password: password,
       user_type: user_type,
-    }).then(data => {
-      console.log(data);
-      if (data["user_created"] == true) {
-        login(username, password);
-      } else if (data["user_exists"] == true) {
-        alert("User already exists")
-      } else { 
-        alert("User could not be created")
-      }
-    }).catch(error => {
-      console.log(error)
-      alert("Der kunne ikke oprettes forbindelse")
-    });
+    })
+      .then((data) => {
+        console.log(data);
+        if (data["user_created"] == true) {
+          login(username, password);
+        } else if (data["user_exists"] == true) {
+          alert("Brugeren eksisterer allerede");
+        } else {
+          alert("Brugeren kunne ikke oprettes");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Der kunne ikke oprettes forbindelse");
+      });
   }
   return false;
 }
@@ -128,28 +125,72 @@ $("#logout").click(function () {
   logout();
 });
 
-// function create_order() {
-//   let valid = is_valid() 
-  
-//   if (valid) {
-//     let brick1 = $("#brick1").val();
-//     let brick2 = $("#brick2").val();
-//     let brick3 = $("#brick3").val();
-//     let data = ajax_request("/login", {
-//       username: username,
-//       password: password,
-//       type: type
-//     });
-//     let data = {};
-//     if (!data) {
-//       console.log("API ikke tilgængelig");
-//     } else {
-//       console.log(data);
-//     }
-//   } else {
-//     console.log("Invalid");
-//   }
-//   return false;
-// }
+function create_order() {
+  let valid = is_valid();
+  if (valid) {
+    let brick1 = $("#brick1").val();
+    let brick2 = $("#brick2").val();
+    let brick3 = $("#brick3").val();
+    ajax_request("/order/new", {
+      username: localStorage.getItem("username"),
+      product: [brick1, brick2, brick3],
+    })
+      .then((data) => {
+        console.log(data);
+        if (data["order_created"] == true) {
+          alert("Ordre oprettet");
+        } else {
+          alert("Ordren kunne ikke oprettes");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Der kunne ikke oprettes forbindelse");
+      });
+  }
+  return false;
+}
 
+function load_table_orders(items) {
+  console.log(items)
+  const table = document.getElementById("my-orders");
+  items.forEach((item) => {
+    let row = table.insertRow();
+    let ordre_id = row.insertCell(0);
+    ordre_id.innerHTML = item["order_id"];
+    let status = row.insertCell(1);
+    status.innerHTML = item["status"];
+    let vare = row.insertCell(2);
+    vare.innerHTML = item["vare"];
+    let bestillingsdato = row.insertCell(3);
+    bestillingsdato.innerHTML = item["order_date"];
+  });
+}
+
+function populate_table() {
+  console.log("populate_table")
+  load_table_orders([{order_id: "1", status: "ok", vare: "Rød, Grøn, Blå", order_date: "8. september 2020"},
+  {order_id: "2", status: "ok", vare: "Rød, Grøn, Blå", order_date: "8. september 2020"},
+  {order_id: "3", status: "ok", vare: "Rød, Grøn, Blå", order_date: "8. september 2020"}])
+  // ajax_request("/order/get", {
+  //   username: localStorage.getItem("username"),
+  // })
+  //   .then((data) => {
+  //     console.log(data);
+  //     if (data["orders"] != undefined) {
+  //       console.log("Ordrer hentet");
+  //       load_table_orders(data["orders"])
+  //     } else {
+  //       console.log("Ordrerne kunne ikke hentes");
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //     alert("Der kunne ikke oprettes forbindelse");
+  //   });
+};
+
+$( document ).ready(function() {
+  populate_table()
+});
 autoRedirect();

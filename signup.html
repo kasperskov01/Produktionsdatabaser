@@ -9,21 +9,23 @@
 </head>
 
 <body>
-    <div class="wrapper">    
-        <form id="signup" class="auth shadow-box" onSubmit="return check_form_signup()">
-            <h2>Opret bruger</h2>
-            <label for="username">Indtast brugernavn</label>
-            <input type="text" class="form-field" name="username" id="username" placeholder="Brugernavn">
-            <label for="password">Indtast adgangskode</label>
-            <input type="password" class="form-field" name="password" id="password" placeholder="Adgangskode">
-            <label for="usertype">Vælg brugertype</label>
-            <select class="select-type" class="form-field" name="user_type" id="user_type">
-                <option value="kunde">Kunde</option>
-                <option value="kunde">Chef</option>
-            </select>
-            <button class="submit" type="submit">Opret bruger</button>
-            <a class="login-register-link" href="/login.html">Allerede en bruger? Log ind her</a>
-        </form>
+    <div class="wrapper">
+        <div class="general-wrapper login-logout">
+            <form id="signup" class="auth shadow-box" onSubmit="return check_form_signup()">
+                <h2>Opret bruger</h2>
+                <label for="username">Indtast brugernavn</label>
+                <input type="text" class="form-field" name="username" id="username" placeholder="Brugernavn">
+                <label for="password">Indtast adgangskode</label>
+                <input type="password" class="form-field" name="password" id="password" placeholder="Adgangskode">
+                <label for="usertype">Vælg brugertype</label>
+                <select class="select-type" class="form-field" name="user_type" id="user_type">
+                    <option value="kunde">Kunde</option>
+                    <option value="kunde">Chef</option>
+                </select>
+                <button class="submit" type="submit">Opret bruger</button>
+                <a class="login-register-link" href="/login.html">Allerede en bruger? Log ind her</a>
+            </form>
+        </div>
     </div>
     <script src="javascript/app.js"></script>
 </body>

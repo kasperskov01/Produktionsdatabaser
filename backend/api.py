@@ -145,10 +145,6 @@ def new_order():
     product = response["product"]
 
 
-
-
-
-
 @app.after_request
 def add_headers(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
