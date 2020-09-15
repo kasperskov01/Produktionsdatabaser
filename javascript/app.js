@@ -131,6 +131,7 @@ function create_order() {
     let brick1 = $("#brick1").val();
     let brick2 = $("#brick2").val();
     let brick3 = $("#brick3").val();
+    console.log(brick1)
     ajax_request("/order/new", {
       username: localStorage.getItem("username"),
       product: [brick1, brick2, brick3],
