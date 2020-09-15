@@ -21,7 +21,9 @@ print('Rød          - Kør til rød')
 print('Blå          - Kør til Blå')
 print('Lilla        - Kør til lilla')
 print('Pink         - Kør til pink')
-
+print('Åben         - Åbner klo')
+print('Luk          - Lukker klo')
+print('Stick        - Tager en pind og clearer plate')
 #Punkter:
 prog.Red_move = b'    movej(p[-0.46767872396762844, -0.3698128835873044, 0.02963185559456491, -2.217932472407618, -2.222047281659294, -0.0015727295386725355])\n'
 prog.Blue_move = b'    movej(p[-0.3725509088123165, -0.4680704494476208, 0.029604686116777662, -2.217798272104411, -2.222176627899193, -0.0016518231639489926])\n'
