@@ -146,6 +146,11 @@ def new_order():
     product = response["product"]
 
     found_user = User.query.filter_by(username=username).first()
+    if not found_user:
+        print("No user found")
+        to_return = {"order_created": False}
+        return jsonify(to_return)
+
     print(f"found user: {type(found_user)}, username: {found_user.username}")
 
     new_order = Order(product=json.dumps(product), user=found_user)
@@ -180,9 +185,14 @@ def delete_order():
     order_id = response["order_id"]
 
     found_order = Order.query.filter_by(id=order_id).first()
-
-    db.session.delete(found_order)
-    db.session.commit()
+    if not found_order:
+        to_return = {"order_deleted": False}
+        print("Order not found")
+    else:
+        db.session.delete(found_order)
+        db.session.commit()
+        to_return= {"order_deleted": True}
+        print("Order deleted")
 
     return jsonify(to_return)
 
