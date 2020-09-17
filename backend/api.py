@@ -175,9 +175,12 @@ def get_orders():
     found_orders = Order.query.filter_by(user_id=found_user.id).all()
     print(f"Orders: {found_orders}")
 
-    to_return = {"orders": found_orders}
-
-    return jsonify(to_return)
+    to_return = []
+    for order in found_orders:
+        order_dict = {"order_id": order.id, "status": "ok", "vare": order.product, "order_date": order.date_ordered}
+        to_return.append(order_dict)
+    
+    return jsonify({"orders": to_return})
 
 @app.route("/api/order/delete", methods=["POST"])
 def delete_order():

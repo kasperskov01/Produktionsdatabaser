@@ -1,4 +1,4 @@
-let is_dev = false
+let is_dev = true
 
 let ajax_url = "https://proddb.herokuapp.com/api"
 if (is_dev) {
