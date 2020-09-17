@@ -5,6 +5,7 @@ from math import sin
 import time
 import socket
 import sqlite3
+import rest_api as api
 
 prog = UR_programmer("10.130.58.14", simulate=False)
 
@@ -203,3 +204,6 @@ while not inp.startswith('q'):
     elif inp == "Vis":
         c = con.cursor()
         c.execute('SELECT orderID,ting1,ting2, ting3 FROM orders')
+
+    elif inp == "Status":
+        api.robot_order_get()
