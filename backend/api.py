@@ -154,10 +154,25 @@ def new_order():
     db.session.add(new_order)
     db.session.commit()
 
-    # # print(new_order.id)
-    # # print(new_order.product)
-    # # print(new_order.user_id)
+    print(new_order.id)
+    print(new_order.product)
+    print(new_order.user_id)
     to_return = {"order_created": True}
+
+    return jsonify(to_return)
+
+@app.route("/api/order/get", methods=["POST"])
+def get_orders():
+    response = request.get_json()
+    username = response["username"]
+
+    found_user = User.query.filter_by(username=username).first()
+
+    found_orders = Order.query.filter_by(user_id=found_user.id).all()
+
+    print(f"Orders: {found_orders}")
+
+    to_return = {"orders": found_orders}
 
     return jsonify(to_return)
 
