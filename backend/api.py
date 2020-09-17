@@ -180,7 +180,7 @@ def get_orders():
         order_dict = {"order_id": order.id, "status": "ok", "vare": order.product, "order_date": order.date_ordered}
         to_return.append(order_dict)
     
-    return jsonify(to_return)
+    return jsonify({"orders": to_return})
 
 @app.route("/api/order/delete", methods=["POST"])
 def delete_order():
