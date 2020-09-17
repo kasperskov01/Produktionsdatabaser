@@ -178,25 +178,25 @@ function load_table_orders(items) {
 
 function populate_table() {
   console.log("populate_table")
-  load_table_orders([{order_id: "1", status: "ok", vare: "Rød, Grøn, Blå", order_date: "8. september 2020"},
-  {order_id: "2", status: "ok", vare: "Rød, Grøn, Blå", order_date: "8. september 2020"},
-  {order_id: "3", status: "ok", vare: "Rød, Grøn, Blå", order_date: "8. september 2020"}])
-  // ajax_request("/order/get", {
-  //   username: localStorage.getItem("username"),
-  // })
-  //   .then((data) => {
-  //     console.log(data);
-  //     if (data["orders"] != undefined) {
-  //       console.log("Ordrer hentet");
-  //       load_table_orders(data["orders"])
-  //     } else {
-  //       console.log("Ordrerne kunne ikke hentes");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //     alert("Der kunne ikke oprettes forbindelse");
-  //   });
+  // load_table_orders([{order_id: "1", status: "ok", vare: "Rød, Grøn, Blå", order_date: "8. september 2020"},
+  // {order_id: "2", status: "ok", vare: "Rød, Grøn, Blå", order_date: "8. september 2020"},
+  // {order_id: "3", status: "ok", vare: "Rød, Grøn, Blå", order_date: "8. september 2020"}])
+  ajax_request("/order/get", {
+    username: localStorage.getItem("username"),
+  })
+    .then((data) => {
+      console.log(data);
+      if (data["orders"] != undefined) {
+        console.log("Ordrer hentet");
+        load_table_orders(data["orders"])
+      } else {
+        console.log("Ordrerne kunne ikke hentes");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      alert("Der kunne ikke oprettes forbindelse");
+    });
 };
 
 $( document ).ready(function() {
