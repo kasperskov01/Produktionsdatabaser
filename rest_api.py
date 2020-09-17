@@ -10,7 +10,7 @@ def robot_order_get():
         print(data["order"])
         return data
     except:
-        print("Tobias")
+        print("Fejl opstod")
 
 def robot_order_status_set(order_id, status):
     query = {'order_id':order_id, 'status':status}
@@ -21,5 +21,5 @@ def robot_order_status_set(order_id, status):
         print(data["update_status"])
         return data
     except:
-        print("Tobias")
+        print("Fejl opstod")
     

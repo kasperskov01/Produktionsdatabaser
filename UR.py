@@ -8,9 +8,7 @@ import sqlite3
 import rest_api as api
 
 prog = UR_programmer("10.130.58.14", simulate=False)
-
 con = sqlite3.connect('data.db')
-
 rtd = RTData()
 rtd.connect("10.130.58.14", simulate = False)
 
@@ -31,6 +29,7 @@ print('Opret db     - Opretter database')
 print('Add          - Tilføj til database')
 print('Opret db     - Lav database orders')
 print('Tilføj       - Tilføj ordre til database')
+print('Status       - Ser status på robot')
 
 #Punkter:
 prog.Red_move = b'    movej(p[-0.46767872396762844, -0.3698128835873044, 0.02963185559456491, -2.217932472407618, -2.222047281659294, -0.0015727295386725355])\n'
@@ -64,7 +63,6 @@ while not inp.startswith('q'):
         #prog.s.send(b'MoveJ targetPos')
         #prog.s.send(b'counter:=0')      
         prog.s.send(b'end\n')
-
         print('Socket åben')
     
     elif inp == "Hjem":
@@ -138,7 +136,6 @@ while not inp.startswith('q'):
         response = s.recv(BUFFER_SIZE)
         s.close()
 
-
     elif inp =="Luk":
         TCP_PORT = 29999
         BUFFER_SIZE = 1024
@@ -190,7 +187,6 @@ while not inp.startswith('q'):
             con.commit()
         except Exception as e:
             print('Tabellen findes allerede/fejl opstod')
-    
     
     elif inp == "Tilføj":
         orderID = input('Indtast orderID: ')
