@@ -167,16 +167,31 @@ def get_orders():
     username = response["username"]
 
     found_user = User.query.filter_by(username=username).first()
-
     found_orders = Order.query.filter_by(user_id=found_user.id).all()
-
     print(f"Orders: {found_orders}")
 
     to_return = {"orders": found_orders}
 
     return jsonify(to_return)
 
+@app.route("/api/order/delete", methods=["POST"])
+def delete_order():
+    response = request.get_json()
+    order_id = response["order_id"]
 
+    found_order = Order.query.filter_by(id=order_id).first()
+
+    db.session.delete(found_order)
+    db.session.commit()
+
+    return jsonify(to_return)
+
+@app.route("/api/robot/order/get", methods=["POST"])
+def send_data_tp_robot():
+    response = request.get_json()
+
+    to_return = "hello"
+    return to_return
 
 @app.after_request
 def add_headers(response):
