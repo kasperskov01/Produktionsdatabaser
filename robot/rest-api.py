@@ -7,3 +7,8 @@ data = response.json()
 if data:
     print(data)
     print(data["user_exists"])
+
+dumped = json.dumps(query)
+
+print(dumped.json())
+
