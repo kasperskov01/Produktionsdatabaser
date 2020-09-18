@@ -28,21 +28,30 @@
         <form class="create-order shadow-box" onSubmit="return create_order()">
             <h2>Tilføj ordre</h2>
             <ul>
-                <select class="select-type" name="brick3" id="brick3">
-                    <option value="red">Rød</option>
-                    <option value="green">Grøn</option>
-                    <option value="blue">Blå</option>
-                </select>
-                <select class="select-type" name="brick2" id="brick2">
-                    <option value="red">Rød</option>
-                    <option value="green">Grøn</option>
-                    <option value="blue">Blå</option>
-                </select>
-                <select class="select-type" name="brick1" id="brick1">
-                    <option value="red">Rød</option>
-                    <option value="green">Grøn</option>
-                    <option value="blue">Blå</option>
-                </select>
+                <div class="select-container">
+                    <select class="select-type" name="brick1" id="brick1">
+                        <option selected value="red">Rød</option>
+                        <option value="green">Grøn</option>
+                        <option value="blue">Blå</option>
+                    </select>
+                    <div id="brick1-color" class="brick-color"></div>
+                </div>
+                <div class="select-container">
+                    <select class="select-type" name="brick2" id="brick2">
+                        <option value="red">Rød</option>
+                        <option selected value="green">Grøn</option>
+                        <option value="blue">Blå</option>
+                    </select>
+                    <div id="brick2-color" class="brick-color"></div>
+                </div>
+                <div class="select-container">
+                    <select class="select-type" name="brick3" id="brick3">
+                        <option value="red">Rød</option>
+                        <option value="green">Grøn</option>
+                        <option selected value="blue">Blå</option>
+                    </select>
+                    <div id="brick3-color" class="brick-color"></div>
+                </div>
             </ul>
             <button class="submit" type="submit">Bestil ordre</button>
         </form>

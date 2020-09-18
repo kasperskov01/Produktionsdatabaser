@@ -160,17 +160,32 @@ function create_order() {
   return false;
 }
 
+
+
 function load_table_orders(items) {
   console.log(items)
   const table = document.getElementById("my-orders");
   items.forEach((item) => {
     let row = table.insertRow();
+
     let ordre_id = row.insertCell(0);
     ordre_id.innerHTML = item["order_id"];
+
     let status = row.insertCell(1);
     status.innerHTML = item["status"];
+
     let vare = row.insertCell(2);
-    vare.innerHTML = item["vare"];
+    vare.classList.add("product-cell")
+    let product = JSON.parse(item["vare"])
+    product.forEach((brick_color) => {
+      var brick = document.createElement("div"); 
+      brick.style.background = brick_color
+      brick.style.width = "20px"
+      brick.style.height = "20px"
+      brick.classList.add("brick")
+      vare.appendChild(brick)
+    })    
+
     let bestillingsdato = row.insertCell(3);
     bestillingsdato.innerHTML = item["order_date"];
   });
@@ -195,11 +210,27 @@ function populate_table() {
     })
     .catch((error) => {
       console.log(error);
-      alert("Der kunne ikke oprettes forbindelse");
+      console.log("Der kunne ikke oprettes forbindelse");
     });
 };
 
 $( document ).ready(function() {
   populate_table()
+
+  document.getElementById("brick1-color").style.background = $("#brick1").val();
+  document.getElementById("brick2-color").style.background = $("#brick2").val();
+  document.getElementById("brick3-color").style.background = $("#brick3").val();
+  $("#brick1").change(function () {
+    console.log("#brick1 change")
+    document.getElementById("brick1-color").style.background = $("#brick1").val();
+  })
+  $("#brick2").change(function () {
+    console.log("#brick2 change")
+    document.getElementById("brick2-color").style.background = $("#brick2").val();
+  })
+  $("#brick3").change(function () {
+    console.log("#brick3 change")
+    document.getElementById("brick3-color").style.background = $("#brick3").val();
+  })
 });
 autoRedirect();
