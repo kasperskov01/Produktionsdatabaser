@@ -14,10 +14,35 @@ def database_init():
     db.create_all()
 
     db.session.add(Status(status="Bestilt"))
+    db.session.add(Status(status="Produceret"))
+    db.session.add(Status(status="Leveret"))
+    db.session.add(Status(status="Slettet"))
+
+    robot_available = Status(status="Robot ledig")
+    db.session.add(robot_available)
+    db.session.add(Status(status="Robot ikke ledig"))
+
+    db.session.add(Robot(ip_name="10.130.58.14", status=robot_available))
+    db.session.add(Robot(ip_name="10.130.58.13", status=robot_available))
+    db.session.add(Robot(ip_name="10.130.58.12", status=robot_available))
+    db.session.add(Robot(ip_name="10.130.58.11", status=robot_available))
+
     db.session.commit()
 
 
 # en-til-mange relation: https://www.youtube.com/watch?v=juPQ04_twtA
+
+"""
+En til mange relation med flask sqlalchemy
+
+lav dette relationship, på den tabel som er "en" i en til mange relationen.
+users = db.relationship('User', backref='type', lazy=True)
+
+'User' er her python klassen som bruges til at bygge "users" tabellen
+
+backref='type' definerer hvordan man skal lave relationen når man laver et nyt user objekt.
+Man giver en bruger en type således "User(type=type_objekt)", hvor type_objekt er lavet med Type()
+"""
 
 class Type(db.Model):
     __tablename__ = "types"
@@ -39,10 +64,6 @@ class User(db.Model):
     type_id = db.Column(db.Integer, db.ForeignKey('types.id'), nullable=False)
     orders = db.relationship('Order', backref='user', lazy=True)
 
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
-
     def __repr__(self):
         return "<brugerid %r" % self.id
 
@@ -53,6 +74,7 @@ class Status(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
     status = db.Column(db.String(200), nullable=False)
     orders = db.relationship("Order", backref="status", lazy=True)
+    robots = db.relationship("Robot", backref="status", lazy=True)
 
 
 class Robot(db.Model):
@@ -60,10 +82,8 @@ class Robot(db.Model):
 
     id = db.Column("id", db.Integer, primary_key=True)
     ip_name = db.Column(db.String(200), nullable=False)
-    status_id = db.Column(db.Integer, nullable=False, default=4) # Default er den status id som robboten får
-
-    def __init__(self, ip_name):
-        self.ip_name = ip_name
+    status_id = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False) # Default er den status id som robboten får
+    orders = db.relationship("Order", backref="robot", lazy=True)
 
 
 class Order(db.Model):
@@ -74,10 +94,8 @@ class Order(db.Model):
     date_finished = db.Column(db.DateTime, default=None)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False)
-    # robot_id = db.Column(db.Integer, nullable=False)
+    robot_id = db.Column(db.Integer, db.ForeignKey('robots.id'), nullable=False)
     product = db.Column(db.String(200), nullable=False)
-
-
 
 
 @app.route('/api/user/signup', methods=["POST"])
@@ -92,6 +110,7 @@ def opret():
     print(type(found_user_type))
     if not found_user_type:
         _type = Type(user_type)
+        db.session.add(_type)
         print("new user type created")
     else:
         _type = found_user_type
@@ -100,23 +119,14 @@ def opret():
     found_user = User.query.filter_by(username=username).first()
 
     if found_user:
-        to_return = {"user_exists": True}
+        to_return = {"user_exists": True, "user_created": False}
         print("user already created")
     else:
-        new_user = User(username, password)
-
-
-        _type.users.append(new_user)
-        db.session.add(_type)
-
+        new_user = User(username=username, password=password, type=_type)
         db.session.add(new_user)
         db.session.commit()
 
-        print(new_user.id)
-        print(new_user.username)
-        print(new_user.password)
-        print(new_user.type_id)
-        to_return = {"user_created": True}
+        to_return = {"user_exists": False,"user_created": True}
         print("user created")
 
     return jsonify(to_return)
@@ -147,26 +157,21 @@ def new_order():
     username = response["username"]
     product = response["product"]
     status = "Bestilt"
+    robot = "10.130.58.14"
 
     found_user = User.query.filter_by(username=username).first()
     if not found_user:
-        print("No user found")
         to_return = {"order_created": False}
         return jsonify(to_return)
-    print(f"found user: {type(found_user)}, username: {found_user.username}")
 
     found_status = Status.query.filter_by(status=status).first()
-
-    new_order = Order(product=json.dumps(product), user=found_user, status=found_status)
+    found_robot = Robot.query.filter_by(ip_name=robot).first()
+    new_order = Order(product=json.dumps(product), user=found_user, status=found_status, robot=found_robot)
 
     db.session.add(new_order)
     db.session.commit()
 
-    print(new_order.id)
-    print(new_order.product)
-    print(new_order.user_id)
     to_return = {"order_created": True}
-
     return jsonify(to_return)
 
 @app.route("/api/order/get", methods=["POST"])
@@ -183,7 +188,6 @@ def get_orders():
     if not found_orders:
         return jsonify({"orders": order_list})
 
-    
     for order in found_orders:
         found_status = Status.query.filter_by(id=order.status_id).first()
         status = found_status.status
