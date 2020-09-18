@@ -147,7 +147,7 @@ function create_order() {
       .then((data) => {
         console.log(data);
         if (data["order_created"] == true) {
-          alert("Ordre oprettet");
+          console.log("Ordre oprettet");
         } else {
           alert("Ordren kunne ikke oprettes");
         }
@@ -179,10 +179,12 @@ function load_table_orders(items) {
     let product = JSON.parse(item["vare"])
     product.forEach((brick_color) => {
       var brick = document.createElement("div"); 
-      brick.style.background = brick_color
-      brick.style.width = "20px"
-      brick.style.height = "20px"
       brick.classList.add("brick")
+      brick.style.backgroundColor = brick_color;
+      brick.style.backgroundImage = "url(assets/brick_inverted.png)"
+      // brick.style.backgroundRepeat = "no-repeat";
+      // brick.style.backgroundPosition = "center top";
+
       vare.appendChild(brick)
     })    
 
@@ -217,20 +219,35 @@ function populate_table() {
 $( document ).ready(function() {
   populate_table()
 
-  document.getElementById("brick1-color").style.background = $("#brick1").val();
-  document.getElementById("brick2-color").style.background = $("#brick2").val();
-  document.getElementById("brick3-color").style.background = $("#brick3").val();
+  let brick = document.getElementById("brick1-color")
+  brick.style.backgroundColor = $("#brick1").val();
+  brick.style.backgroundImage = "url(assets/brick_inverted.png)"
+
+  let brick2 = document.getElementById("brick2-color")
+  brick2.style.backgroundColor = $("#brick2").val();
+  brick2.style.backgroundImage = "url(assets/brick_inverted.png)"
+
+  let brick3 = document.getElementById("brick3-color")
+  brick3.style.backgroundColor = $("#brick3").val();
+  brick3.style.backgroundImage = "url(assets/brick_inverted.png)"
+
+  // document.getElementById("brick2-color").style.backgroundColor = $("#brick2").val();
+  // document.getElementById("brick3-color").style.backgroundColor = $("#brick3").val();
+  // brick.style.backgroundColor = brick_color;
   $("#brick1").change(function () {
     console.log("#brick1 change")
-    document.getElementById("brick1-color").style.background = $("#brick1").val();
+    let brick = document.getElementById("brick1-color")
+    brick.style.backgroundImage = "url(assets/brick_inverted.png)"
+    brick.style.backgroundColor = $("#brick1").val();
+
   })
   $("#brick2").change(function () {
     console.log("#brick2 change")
-    document.getElementById("brick2-color").style.background = $("#brick2").val();
+    document.getElementById("brick2-color").style.backgroundColor = $("#brick2").val();
   })
   $("#brick3").change(function () {
     console.log("#brick3 change")
-    document.getElementById("brick3-color").style.background = $("#brick3").val();
+    document.getElementById("brick3-color").style.backgroundColor = $("#brick3").val();
   })
 });
 autoRedirect();
