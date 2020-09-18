@@ -64,10 +64,6 @@ class User(db.Model):
     type_id = db.Column(db.Integer, db.ForeignKey('types.id'), nullable=False)
     orders = db.relationship('Order', backref='user', lazy=True)
 
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
-
     def __repr__(self):
         return "<brugerid %r" % self.id
 
@@ -80,6 +76,7 @@ class Status(db.Model):
     orders = db.relationship("Order", backref="status", lazy=True)
     robots = db.relationship("Robot", backref="status", lazy=True)
 
+
 class Robot(db.Model):
     __tablename__ = "robots"
 
@@ -87,7 +84,6 @@ class Robot(db.Model):
     ip_name = db.Column(db.String(200), nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False) # Default er den status id som robboten får
     orders = db.relationship("Order", backref="robot", lazy=True)
-
 
 
 class Order(db.Model):
@@ -114,6 +110,7 @@ def opret():
     print(type(found_user_type))
     if not found_user_type:
         _type = Type(user_type)
+        db.session.add(_type)
         print("new user type created")
     else:
         _type = found_user_type
@@ -125,10 +122,7 @@ def opret():
         to_return = {"user_exists": True}
         print("user already created")
     else:
-        new_user = User(username, password)
-
-        _type.users.append(new_user)
-        db.session.add(_type)
+        new_user = User(username=username, password=password, type=_type)
 
         db.session.add(new_user)
         db.session.commit()
