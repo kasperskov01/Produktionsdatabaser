@@ -148,6 +148,7 @@ function create_order() {
         console.log(data);
         if (data["order_created"] == true) {
           console.log("Ordre oprettet");
+          populate_table()
         } else {
           alert("Ordren kunne ikke oprettes");
         }
@@ -218,38 +219,4 @@ function populate_table() {
     });
 };
 
-$( document ).ready(function() {
-  populate_table()
-
-  let brick = document.getElementById("brick1-color")
-  brick.style.backgroundColor = $("#brick1").val();
-  brick.style.backgroundImage = "url(assets/brick_inverted.png)"
-
-  let brick2 = document.getElementById("brick2-color")
-  brick2.style.backgroundColor = $("#brick2").val();
-  brick2.style.backgroundImage = "url(assets/brick_inverted.png)"
-
-  let brick3 = document.getElementById("brick3-color")
-  brick3.style.backgroundColor = $("#brick3").val();
-  brick3.style.backgroundImage = "url(assets/brick_inverted.png)"
-
-  // document.getElementById("brick2-color").style.backgroundColor = $("#brick2").val();
-  // document.getElementById("brick3-color").style.backgroundColor = $("#brick3").val();
-  // brick.style.backgroundColor = brick_color;
-  $("#brick1").change(function () {
-    console.log("#brick1 change")
-    let brick = document.getElementById("brick1-color")
-    brick.style.backgroundImage = "url(assets/brick_inverted.png)"
-    brick.style.backgroundColor = $("#brick1").val();
-
-  })
-  $("#brick2").change(function () {
-    console.log("#brick2 change")
-    document.getElementById("brick2-color").style.backgroundColor = $("#brick2").val();
-  })
-  $("#brick3").change(function () {
-    console.log("#brick3 change")
-    document.getElementById("brick3-color").style.backgroundColor = $("#brick3").val();
-  })
-});
 autoRedirect();

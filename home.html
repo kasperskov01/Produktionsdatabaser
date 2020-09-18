@@ -77,6 +77,37 @@
     </div>
     <footer></footer>
     <script src="javascript/app.js"></script>
+    <script>
+        $(document).ready(function () {
+            populate_table()
+
+            let brick = document.getElementById("brick1-color")
+            brick.style.backgroundColor = $("#brick1").val();
+            brick.style.backgroundImage = "url(assets/brick_inverted.png)"
+
+            let brick2 = document.getElementById("brick2-color")
+            brick2.style.backgroundColor = $("#brick2").val();
+            brick2.style.backgroundImage = "url(assets/brick_inverted.png)"
+
+            let brick3 = document.getElementById("brick3-color")
+            brick3.style.backgroundColor = $("#brick3").val();
+            brick3.style.backgroundImage = "url(assets/brick_inverted.png)"
+
+
+            $("#brick1").change(function () {
+                console.log("#brick1 change")
+                document.getElementById("brick1-color").style.backgroundColor = $("#brick1").val();
+            })
+            $("#brick2").change(function () {
+                console.log("#brick2 change")
+                document.getElementById("brick2-color").style.backgroundColor = $("#brick2").val();
+            })
+            $("#brick3").change(function () {
+                console.log("#brick3 change")
+                document.getElementById("brick3-color").style.backgroundColor = $("#brick3").val();
+            })
+        });
+    </script>
 </body>
 
 </html>
