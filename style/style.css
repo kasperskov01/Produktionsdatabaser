@@ -174,13 +174,37 @@ button.submit:hover {
 }
 
 select.select-type {
-  margin-top: 0.7rem;
+  margin: 0;
+  /* margin-top: 0.7rem; */
+  flex: 1 1 auto;
 }
 
 ul {
   display: flex;
   flex-direction: column;
 }
+
+.select-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.7rem;
+}
+
+.brick-color {
+  width: 20px;
+  height: 20px;
+  margin-left: 15px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.brick {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
 
 /* My orders */
 
@@ -192,6 +216,17 @@ ul {
 table {
   min-width: 100%;
   margin-top: 0.7rem;
+  border-collapse: collapse;
+}
+.product-cell>* {
+  margin: 0.2rem auto;
+  border-collapse: collapse;
+}
+.product-cell>:first-child {
+  margin-top: 0 !important;
+}
+.product-cell>:last-child {
+  margin-bottom: 0 !important;
 }
 
 table,
@@ -205,6 +240,8 @@ td,
 th {
   padding: 0.4rem;
 }
+
+
 
 /* Tiny devices */
 @media (max-width: 575px) {
