@@ -32,6 +32,18 @@ def database_init():
 
 # en-til-mange relation: https://www.youtube.com/watch?v=juPQ04_twtA
 
+"""
+En til mange relation med flask sqlalchemy
+
+lav dette relationship, på den tabel som er "en" i en til mange relationen.
+users = db.relationship('User', backref='type', lazy=True)
+
+'User' er her python klassen som bruges til at bygge "users" tabellen
+
+backref='type' definerer hvordan man skal lave relationen når man laver et nyt user objekt.
+Man giver en bruger en type således "User(type=type_objekt)", hvor type_objekt er lavet med Type()
+"""
+
 class Type(db.Model):
     __tablename__ = "types"
 
