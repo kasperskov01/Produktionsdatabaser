@@ -13,7 +13,7 @@ def database_init():
     db.drop_all()
     db.create_all()
 
-    db.session.add(Status(status="ordered"))
+    db.session.add(Status(status="Bestilt"))
     db.session.commit()
 
 
@@ -146,6 +146,7 @@ def new_order():
     response = request.get_json()
     username = response["username"]
     product = response["product"]
+    status = "Bestilt"
 
     found_user = User.query.filter_by(username=username).first()
     if not found_user:
@@ -154,7 +155,7 @@ def new_order():
         return jsonify(to_return)
     print(f"found user: {type(found_user)}, username: {found_user.username}")
 
-    found_status = Status.query.filter_by(status="ordered").first()
+    found_status = Status.query.filter_by(status=status).first()
 
     new_order = Order(product=json.dumps(product), user=found_user, status=found_status)
 
