@@ -13,6 +13,9 @@ def database_init():
     db.drop_all()
     db.create_all()
 
+    db.session.add(Status(status="Bestilt"))
+    db.session.commit()
+
 
 # en-til-mange relation: https://www.youtube.com/watch?v=juPQ04_twtA
 
@@ -49,6 +52,7 @@ class Status(db.Model):
 
     id = db.Column("id", db.Integer, primary_key=True)
     status = db.Column(db.String(200), nullable=False)
+    orders = db.relationship("Order", backref="status", lazy=True)
 
 
 class Robot(db.Model):
@@ -69,12 +73,10 @@ class Order(db.Model):
     date_ordered = db.Column(db.DateTime, default=datetime.now)
     date_finished = db.Column(db.DateTime, default=None)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    # status_id = db.Column(db.Integer, nullable=False, default=1) # Default er den status id som ordren får
+    status_id = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False)
     # robot_id = db.Column(db.Integer, nullable=False)
     product = db.Column(db.String(200), nullable=False)
 
-    # def __init__(self, product):
-    #     self.product = product
 
 
 
@@ -144,17 +146,18 @@ def new_order():
     response = request.get_json()
     username = response["username"]
     product = response["product"]
+    status = "Bestilt"
 
     found_user = User.query.filter_by(username=username).first()
     if not found_user:
         print("No user found")
         to_return = {"order_created": False}
         return jsonify(to_return)
-
     print(f"found user: {type(found_user)}, username: {found_user.username}")
 
-    new_order = Order(product=json.dumps(product), user=found_user)
-    print(f"product: {new_order.product}")
+    found_status = Status.query.filter_by(status=status).first()
+
+    new_order = Order(product=json.dumps(product), user=found_user, status=found_status)
 
     db.session.add(new_order)
     db.session.commit()
@@ -171,16 +174,24 @@ def get_orders():
     response = request.get_json()
     username = response["username"]
 
-    found_user = User.query.filter_by(username=username).first()
-    found_orders = Order.query.filter_by(user_id=found_user.id).all()
-    print(f"Orders: {found_orders}")
+    order_list = []
 
-    to_return = []
-    for order in found_orders:
-        order_dict = {"order_id": order.id, "status": "ok", "vare": order.product, "order_date": order.date_ordered}
-        to_return.append(order_dict)
+    found_user = User.query.filter_by(username=username).first()
+    if not found_user:
+        return jsonify({"orders": order_list})
+    found_orders = Order.query.filter_by(user_id=found_user.id).all()
+    if not found_orders:
+        return jsonify({"orders": order_list})
+
     
-    return jsonify({"orders": to_return})
+    for order in found_orders:
+        found_status = Status.query.filter_by(id=order.status_id).first()
+        status = found_status.status
+
+        order_dict = {"order_id": order.id, "status": status, "vare": order.product, "order_date": order.date_ordered}
+        order_list.append(order_dict)
+    
+    return jsonify({"orders": order_list})
 
 @app.route("/api/order/delete", methods=["POST"])
 def delete_order():
