@@ -119,15 +119,14 @@ def opret():
     found_user = User.query.filter_by(username=username).first()
 
     if found_user:
-        to_return = {"user_exists": True}
+        to_return = {"user_exists": True, "user_created": False}
         print("user already created")
     else:
         new_user = User(username=username, password=password, type=_type)
-
         db.session.add(new_user)
         db.session.commit()
 
-        to_return = {"user_created": True}
+        to_return = {"user_exists": False,"user_created": True}
         print("user created")
 
     return jsonify(to_return)
