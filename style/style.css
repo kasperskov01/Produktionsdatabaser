@@ -209,8 +209,8 @@ ul {
   background-repeat: no-repeat;
   background-image: url(assets/brick_inverted.png);
   display: block;
-  width: 20px;
-  height: 14px;
+  width: 30px;
+  height: 18px;
   /* border-radius: 50%; */
 }
 
@@ -233,9 +233,13 @@ table {
 }
 .product-cell>:first-child {
   margin-top: 0 !important;
+  position: relative;
+  bottom: -7px;
 }
 .product-cell>:last-child {
   margin-bottom: 0 !important;
+  position: relative;
+  top: -7px;
 }
 
 table,

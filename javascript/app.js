@@ -177,11 +177,13 @@ function load_table_orders(items) {
     let vare = row.insertCell(2);
     vare.classList.add("product-cell")
     let product = JSON.parse(item["vare"])
-    product.forEach((brick_color) => {
+    product.forEach((brick_color, index) => {
       var brick = document.createElement("div"); 
       brick.classList.add("brick")
       brick.style.backgroundColor = brick_color;
       brick.style.backgroundImage = "url(assets/brick_inverted.png)"
+      brick.style.position = "relative";
+      brick.style.zIndex = 10 - index;      
       // brick.style.backgroundRepeat = "no-repeat";
       // brick.style.backgroundPosition = "center top";
 
